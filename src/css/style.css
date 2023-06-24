@@ -5,10 +5,9 @@
 .cat-info {
   display: flex;
   gap: 30px;
-  border: 2px solid grey;
 }
 .cat-none {
-    display: none;
+  display: none;
 }
 h2 {
   color: brown;
@@ -21,7 +20,7 @@ h2 {
 }
 
 .error-none {
-    display: none; 
+  display: none;
 }
 
 .loader {
