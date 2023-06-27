@@ -1,7 +1,6 @@
-.hidden {
+.hide {
   display: none;
 }
-
 .cat-info {
   display: flex;
   gap: 30px;
@@ -10,7 +9,14 @@
   display: none;
 }
 h2 {
-  color: brown;
+  color: rgb(47, 131, 85);
+}
+.breed-select {
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 12px;
+  width: 600px;
 }
 
 .error {
@@ -24,15 +30,22 @@ h2 {
 }
 
 .loader {
-  width: 70px;
-  height: 70px;
-  border: 5px solid tomato;
-  border-bottom-color: transparent;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;
-  animation: rotation 1s linear infinite;
+  animation: animloader 1s linear infinite;
   position: fixed;
   left: 50%;
   bottom: 50%;
+}
+
+@keyframes animloader {
+  0% {
+    box-shadow: -72px 0 #8bc983 inset;
+  }
+  100% {
+    box-shadow: 48px 0 #03310a inset;
+  }
 }
