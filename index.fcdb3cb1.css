@@ -1,0 +1,2 @@
+.hide{display:none}.cat-info{gap:30px;display:flex}.cat-none{display:none}h2{color:#2f8355}.breed-select{width:600px;background-color:#f1f1f1;border:1px solid #ccc;border-radius:6px;padding:12px}.error{text-align:center;color:red;margin:20px}.error-none{display:none}.loader{width:48px;height:48px;box-sizing:border-box;border-radius:50%;animation:animloader 1s linear infinite;display:inline-block;position:fixed;bottom:50%;left:50%}@keyframes animloader{0%{box-shadow:inset -72px 0 #8bc983}to{box-shadow:inset 48px 0 #03310a}}
+/*# sourceMappingURL=index.fcdb3cb1.css.map */
