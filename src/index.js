@@ -1,62 +1,49 @@
-import './css/style.css';
-import { fetchBreeds, fetchCatByBreed } from './js/cat-api.js';
-import Notiflix from 'notiflix';
+import { fetchBreeds, fetchCatByBreed } from './js/services/cat-api';
+import createMarkup from './js/services/createMarkup';
 import SlimSelect from 'slim-select';
 import refs from './js/services/refs';
+const { selectEl } = refs;
+const { catInfoEl } = refs;
+const { loaderEl } = refs;
+const { errorEl } = refs;
 
-const loader = document.querySelector('.loader');
-const selectCat = document.querySelector('.breed-select');
-const catInfoEl = document.querySelector('.cat-info');
+const sel = new SlimSelect({
+  select: '.breed-select',
+});
 
-// Приховати інформацію про кота за замовчуванням
-catInfoEl.classList.add('cat-none');
+fetchBreeds()
+  .then(element => {
+    sel.setData(createMarkup(element));
+  })
+  .catch(error => {
+    console.log(error);
+    errorEl.classList.remove('error-none');
+  });
 
-// Приховати селектор за замовчуванням
-selectCat.classList.add('hide');
+selectEl.addEventListener('change', onSelectedCat);
 
-// Показати лоадер
-loader.classList.add('loader');
-
-selectCat.addEventListener('change', showInfoCat);
-
-function makeupSelect() {
-  fetchBreeds()
-    .then(data => {
-      loader.classList.remove('loader');
-      selectCat.innerHTML = data.map(({ name, id }) => `<option value="${id}">${name}</option>`).join('');
-      selectCat.classList.remove('hide');
-    })
-    .catch(() => {
-      loader.classList.remove('loader');
-      Notiflix.Notify.failure('Oops! Something went wrong! Try reloading the page!');
-    });
-}
-
-makeupSelect();
-
-function showInfoCat() {
-  const id = selectCat.value;
-  
-  loader.classList.add('loader');
+function onSelectedCat(event) {
+  const id = event.target.value;
+  loaderEl.classList.add('loader');
   catInfoEl.classList.add('cat-none');
-  
   fetchCatByBreed(id)
-    .then(data => {
-      loader.classList.remove('loader');
+    .then(id => {
+      const markup = `<div class="cat-info">
+	<img src='${id[0].url}' width='600' alt="${id[0].breeds[0].name}">
+	<div class="cat-box">
+		<h2>${id[0].breeds[0].name}</h2>
+		<p>${id[0].breeds[0].description}</p>
+    <h2>Temperament</h2>
+    <p>${id[0].breeds[0].temperament}</p>
+	</div>
+</div>`;
+      catInfoEl.innerHTML = markup;
+      loaderEl.classList.remove('loader');
       catInfoEl.classList.remove('cat-none');
-      makeUpCatInfo(data[0]);
     })
-    .catch(() => {
-      loader.classList.remove('loader');
-      Notiflix.Notify.failure('Oops! Something went wrong! Try reloading the page!');
-    });
-}
 
-function makeUpCatInfo(breed) {
-  let title = `<h2>${breed.breeds[0].name}</h2>`;
-  let image = `<div><img src="${breed.url}" width='600' alt="${breed.breeds[0].name}"></div>`;
-  let description = `<h3>Description</h3><p>${breed.breeds[0].description}</p>`;
-  let temperament = `<h3>Temperament</h3><p>${breed.breeds[0].temperament}</p>`;
-  catInfoEl.innerHTML = image + '<div class="cat-box">' + title + description + temperament + '</div>';
-  console.log(title);
+    .catch(error => {
+      console.log(error);
+      errorEl.classList.add('error-none');
+    });
 }
